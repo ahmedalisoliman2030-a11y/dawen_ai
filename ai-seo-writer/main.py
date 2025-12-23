@@ -5,8 +5,13 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-# Append current directory to sys.path to ensure imports work if run from outside
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Handle path for frozen app (PyInstaller)
+if getattr(sys, 'frozen', False):
+    application_path = os.path.dirname(sys.executable)
+else:
+    application_path = os.path.dirname(os.path.abspath(__file__))
+
+sys.path.append(application_path)
 
 from app.input.handler import InputHandler
 from app.ai.provider import GeminiProvider
@@ -67,8 +72,10 @@ def main():
             console.print(f"   [green]✓[/green] Article generated ({len(content.split())} words approx).")
 
         # Step 5: Export
-        filepath = exporter.save_article(clean_keyword, content)
-        console.print(Panel(f"SUCCESS!\nArticle saved to: [underline]{filepath}[/underline]", style="bold green"))
+        md_filepath = exporter.save_article(clean_keyword, content)
+        html_filepath = exporter.save_article_html(clean_keyword, content)
+        
+        console.print(Panel(f"SUCCESS!\nMarkdown saved to: [underline]{md_filepath}[/underline]\nHTML saved to: [underline]{html_filepath}[/underline]", style="bold green"))
 
     except ValueError as ve:
         console.print(f"[bold red]Validation Error:[/bold red] {ve}")

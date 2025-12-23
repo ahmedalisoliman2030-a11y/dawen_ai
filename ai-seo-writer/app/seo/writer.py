@@ -27,9 +27,11 @@ class SEOWriter:
         3. **Tone**: Professional, authoritative, yet accessible. 
         4. **SEO**: Naturally weave in the secondary keywords provided in the plan.
         5. **Structure**: Follow the outline provided.
-        6. **Language**: Write in the same language as the Keyword/Plan (likely Arabic based on project context).
+        6. **Language**: The article MUST be written in **Arabic** (اللغة العربية). Do NOT write in English or any other language even if the keywords are in English.
+        7. **Structure**: Use blockquotes (>) for tips or mental maps.
         
         Do not include any conversational filler before or after the article. Start directly with the H1 title.
+        Ensure the output is 100% Arabic.
         """
         
         return self.ai.generate_content(prompt)
